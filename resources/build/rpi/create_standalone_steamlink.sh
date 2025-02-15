@@ -34,7 +34,6 @@ if [ -f "$EXTRADEPS" ]; then
 fi
 
 # Include dependencies not present in LibreELEC
-# Include dependencies not present in LibreELEC
 DEPENDENCIES="
   libGL.so*
   libGLX.so*
@@ -70,6 +69,7 @@ DEPENDENCIES="
   libzvbi.so*
   libsnappy.so*
   libaom.so*
+  libavutil.so*
   libcodec2.so*
   libgsm.so*
   libjxl.so*
@@ -121,9 +121,8 @@ DEPENDENCIES="
   libmd.so*
 "
 
-
 for DEP in $DEPENDENCIES; do
-  cp --verbose --no-dereference --recursive /usr/lib/arm-linux-gnueabihf/$DEP /tmp/steamlink/lib/
+  cp --verbose --no-dereference --recursive /usr/lib/aarch64-linux-gnu/$DEP /tmp/steamlink/lib/
 done
 
 chown -R --reference=/tmp/steamlink /tmp/steamlink/
