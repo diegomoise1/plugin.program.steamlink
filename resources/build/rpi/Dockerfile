@@ -1,15 +1,17 @@
 
-# Use latest compatible Debian version
-FROM navikey/raspbian-buster
+# Use latest Raspberry Pi OS image based on debian:bookworm
+FROM dtcooper/raspberrypi-os:latest
 
-RUN sudo apt-get update \
- && sudo DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends install -y wget apt-transport-https \
- && sudo apt-get update \
- && sudo DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends install -y steamlink libgl1 libxv1 \
+# Removed 'sudo' from commands as the base image runs as root
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends install -y wget apt-transport-https \
+ && apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends install -y steamlink libgl1 libxv1 libavutil57 \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-RUN wget "$(wget -q -O - http://media.steampowered.com/steamlink/rpi/public_build.txt)" -O /tmp/steamlink.tgz
+# URL for the ARM64 version of the archive
+RUN wget "http://media.steampowered.com/steamlink/rpi/bookworm/arm64/steamlink-rpi-bookworm-arm64-1.3.15.284.tar.gz" -O /tmp/steamlink.tgz
 
 # Script to copy the needed libraries
 COPY create_standalone_steamlink.sh /tmp/
